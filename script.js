@@ -149,7 +149,7 @@ LinkedIn: click here
                     output.textContent += input[index];
                     index++;
                 }
-                setTimeout(type, 1);  
+                setTimeout(type, 5);  
             }
         }
 
