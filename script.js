@@ -83,6 +83,7 @@ Available commands:
     function displayAbout() {
         const abouttext = `
 Name: Georgi Dimov
+Online handle: dbox / dbox7 / dbox0
 Location: Bremen, Germany
   
 I am a computer science student interested in Computer Graphics, math, GameDev
@@ -215,7 +216,7 @@ LinkedIn: click here
         contentArea.innerHTML = content;
 
         // Random Offset
-        
+
         const offsetX = Math.floor(Math.random() * 50) - 50; 
         const offsetY = Math.floor(Math.random() * 50) - 25; 
 
