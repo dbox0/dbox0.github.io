@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             case 'contact':
                 displayContact();
                 break;
-            case 'ls':
-                break;
             case 'cat':
                 createCatTerminal();
                 break;
@@ -66,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         terminalOutput.scrollTop = terminalOutput.scrollHeight;
     }
-
     
     function displayHelp() {
         const helpText = `
@@ -75,7 +72,7 @@ Available commands:
 - about: Display information about me
 - projects: Show my projects
 - contact: Show my contact information
-- cat : Show a picture of a cute cat
+- cat : Show a picture of a cat (Uses CAAS - Cat as a Service)
 `;
         displayOutput(helpText);
     }
@@ -111,6 +108,8 @@ Projects:
         * Trepenfall Simulator 2022
         * Eis Planet Schlange
         * PvPinball - Exhibited at Gamescom 2023 
+        
+Open the Projects Terminal above this shell to find links to these projects.
     `
         displayOutput(projectsText);
     }
