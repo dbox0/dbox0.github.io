@@ -161,7 +161,6 @@ LinkedIn: click here
     openTerminalButtons.forEach(button => {
         button.addEventListener('click', function() {
             const buttonId = this.id; 
-            console.log(buttonId)
             createDraggableTerminal(buttonId);
         });
     });
@@ -172,7 +171,6 @@ LinkedIn: click here
 
 
     function createDraggableTerminal(buttonIdOrContent) {
-        console.log("createWindow ID " + buttonIdOrContent)
         let content = '';
         switch (buttonIdOrContent) {
             case 'about-btn':
@@ -205,6 +203,8 @@ LinkedIn: click here
                 content = buttonIdOrContent;
         }
 
+        const isMobile = window.innerWidth <= 768;
+
         const clone = terminalTemplate.content.cloneNode(true);
         const terminal = clone.querySelector('.draggable-terminal');
         const closeButton = terminal.querySelector('.close-terminal');
@@ -215,13 +215,21 @@ LinkedIn: click here
 
         // Random Offset
 
-        const offsetX = Math.floor(Math.random() * 50) - 50; 
-        const offsetY = Math.floor(Math.random() * 50) - 25; 
+        
+       
 
 
-        terminal.style.left = `calc(50% + ${offsetX}px)`;
-        terminal.style.top = `calc(50% + ${offsetY}px)`;
-
+        if (isMobile) {
+            offsetX = -150;
+            offsetY = 0;
+            terminal.style.left = `calc(50% + ${offsetX}px)`;
+            terminal.style.top = `calc(30% + ${offsetY}px)`; // Adjusted top position for better visibility
+        } else {
+            const offsetX = Math.floor(Math.random() * 50) - 50; 
+            const offsetY = Math.floor(Math.random() * 50) - 25; 
+            terminal.style.left = `calc(50% + ${offsetX}px)`;
+            terminal.style.top = `calc(50% + ${offsetY}px)`;
+        }
 
         document.body.appendChild(clone);
 
@@ -242,25 +250,54 @@ LinkedIn: click here
     function makeDraggable(terminal, titleBar) {
         let offsetX = 0, offsetY = 0, isDragging = false;
 
-        titleBar.addEventListener('mousedown', (event) => {
-            isDragging = true;
-            offsetX = event.clientX - terminal.offsetLeft;
-            offsetY = event.clientY - terminal.offsetTop;
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        });
-
-        function onMouseMove(event) {
-            if (isDragging) {
-                terminal.style.left = `${event.clientX - offsetX}px`;
-                terminal.style.top = `${event.clientY - offsetY}px`;
-            }
+    // Function to get the correct event coordinates based on whether it's a touch or mouse event
+    const getEventCoordinates = (event) => {
+        if (event.touches && event.touches.length) {
+            return { x: event.touches[0].clientX, y: event.touches[0].clientY };
         }
+        return { x: event.clientX, y: event.clientY };
+    };
 
-        function onMouseUp() {
-            isDragging = false;
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
+    // Start dragging
+    const startDragging = (event) => {
+        const { x, y } = getEventCoordinates(event);
+        isDragging = true;
+        offsetX = x - terminal.offsetLeft;
+        offsetY = y - terminal.offsetTop;
+
+        // Prevent default to avoid scrolling while dragging on touch devices
+        event.preventDefault();
+
+        document.addEventListener('mousemove', onDragging);
+        document.addEventListener('touchmove', onDragging, { passive: false });
+        document.addEventListener('mouseup', stopDragging);
+        document.addEventListener('touchend', stopDragging);
+    };
+
+    // Dragging in progress
+    const onDragging = (event) => {
+        if (isDragging) {
+            const { x, y } = getEventCoordinates(event);
+            terminal.style.left = `${x - offsetX}px`;
+            terminal.style.top = `${y - offsetY}px`;
+
+            // Prevent default to avoid scrolling while dragging on touch devices
+            event.preventDefault();
         }
-    }
+    };
+
+    // Stop dragging
+    const stopDragging = () => {
+        isDragging = false;
+
+        document.removeEventListener('mousemove', onDragging);
+        document.removeEventListener('touchmove', onDragging);
+        document.removeEventListener('mouseup', stopDragging);
+        document.removeEventListener('touchend', stopDragging);
+    };
+
+    // Add event listeners to start dragging
+    titleBar.addEventListener('mousedown', startDragging);
+    titleBar.addEventListener('touchstart', startDragging, { passive: false });
+}
 });
