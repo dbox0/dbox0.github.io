@@ -249,55 +249,69 @@ LinkedIn: click here
 
     function makeDraggable(terminal, titleBar) {
         let offsetX = 0, offsetY = 0, isDragging = false;
-
-    // Function to get the correct event coordinates based on whether it's a touch or mouse event
-    const getEventCoordinates = (event) => {
-        if (event.touches && event.touches.length) {
-            return { x: event.touches[0].clientX, y: event.touches[0].clientY };
-        }
-        return { x: event.clientX, y: event.clientY };
-    };
-
-    // Start dragging
-    const startDragging = (event) => {
-        const { x, y } = getEventCoordinates(event);
-        isDragging = true;
-        offsetX = x - terminal.offsetLeft;
-        offsetY = y - terminal.offsetTop;
-
-        // Prevent default to avoid scrolling while dragging on touch devices
-        event.preventDefault();
-
-        document.addEventListener('mousemove', onDragging);
-        document.addEventListener('touchmove', onDragging, { passive: false });
-        document.addEventListener('mouseup', stopDragging);
-        document.addEventListener('touchend', stopDragging);
-    };
-
-    // Dragging in progress
-    const onDragging = (event) => {
-        if (isDragging) {
+    
+        // Function to get the correct event coordinates based on whether it's a touch or mouse event
+        const getEventCoordinates = (event) => {
+            if (event.touches && event.touches.length) {
+                return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+            }
+            return { x: event.clientX, y: event.clientY };
+        };
+    
+        // Start dragging
+        const startDragging = (event) => {
             const { x, y } = getEventCoordinates(event);
-            terminal.style.left = `${x - offsetX}px`;
-            terminal.style.top = `${y - offsetY}px`;
-
+            
+            // Check if the click is near the close button
+            const closeButtonRect = terminal.querySelector('.close-terminal').getBoundingClientRect();
+            const buffer = 20; // Area around the close button where dragging is disabled
+    
+            if (x >= closeButtonRect.left - buffer && x <= closeButtonRect.right + buffer &&
+                y >= closeButtonRect.top - buffer && y <= closeButtonRect.bottom + buffer) {
+                // Do not start dragging if close to the close button
+                return;
+            }
+    
+            isDragging = true;
+            offsetX = x - terminal.offsetLeft;
+            offsetY = y - terminal.offsetTop;
+    
             // Prevent default to avoid scrolling while dragging on touch devices
             event.preventDefault();
-        }
-    };
-
-    // Stop dragging
-    const stopDragging = () => {
-        isDragging = false;
-
-        document.removeEventListener('mousemove', onDragging);
-        document.removeEventListener('touchmove', onDragging);
-        document.removeEventListener('mouseup', stopDragging);
-        document.removeEventListener('touchend', stopDragging);
-    };
-
-    // Add event listeners to start dragging
-    titleBar.addEventListener('mousedown', startDragging);
-    titleBar.addEventListener('touchstart', startDragging, { passive: false });
-}
+    
+            // Add event listeners for move and up events
+            document.addEventListener('mousemove', onDragging);
+            document.addEventListener('touchmove', onDragging, { passive: false });
+            document.addEventListener('mouseup', stopDragging);
+            document.addEventListener('touchend', stopDragging);
+        };
+    
+        // Dragging in progress
+        const onDragging = (event) => {
+            if (isDragging) {
+                const { x, y } = getEventCoordinates(event);
+                terminal.style.left = `${x - offsetX}px`;
+                terminal.style.top = `${y - offsetY}px`;
+    
+                // Prevent default to avoid scrolling while dragging on touch devices
+                event.preventDefault();
+            }
+        };
+    
+        // Stop dragging
+        const stopDragging = () => {
+            isDragging = false;
+    
+            // Remove event listeners
+            document.removeEventListener('mousemove', onDragging);
+            document.removeEventListener('touchmove', onDragging);
+            document.removeEventListener('mouseup', stopDragging);
+            document.removeEventListener('touchend', stopDragging);
+        };
+    
+        // Add event listeners to start dragging
+        titleBar.addEventListener('mousedown', startDragging);
+        titleBar.addEventListener('touchstart', startDragging, { passive: false });
+    }
+    
 });
