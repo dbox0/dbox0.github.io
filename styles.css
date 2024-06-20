@@ -64,8 +64,8 @@ body {
     background: radial-gradient(
         ellipse at center,
         rgba(86, 255, 2, 0.1) 0%,
-        rgba(9, 123, 1, 0.009) 50%,
-        rgba(0, 0, 0, 0.981) 70%
+        rgba(48, 145, 0, 0.02) 50%,
+        rgba(0, 0, 0, 0.2) 80%
     );
     pointer-events: none;
     opacity: 0.5;
@@ -123,11 +123,13 @@ a:hover {
     display: flex;
 }
 
-.prompt {
-    margin-right: 10px;
-}
+
+
 
 #user-input {
+    
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 100%;
     background-color: #000;
     border: none;
     color: #0f0;
