@@ -72,12 +72,17 @@ a:hover {
 
 .buttons {
     margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px; /* Optional: Add some space between buttons */
+    padding: 10px; /* Optional: Add some padding around the container */
 }
 
 button.open-terminal {
     background-color: #000000;
     color: #0f0;
-    border: 0px solid #0f0;
+    border:none;
     padding: 5px 10px;
     cursor: pointer;
 }
