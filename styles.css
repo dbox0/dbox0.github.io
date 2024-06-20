@@ -1,7 +1,7 @@
 body {
     background-color: #000;
     color: #0f0;
-    font-family: monospace;
+    font-family: 'Courier New', Courier, monospace;
     margin: 0;
     padding: 0;
     display: flex;
@@ -9,6 +9,71 @@ body {
     flex-direction: column;
     align-items: center;
     height: 100vh;
+}
+
+
+.terminal-screen {
+    
+    background: black;
+    color: limegreen;
+   
+    overflow: hidden;
+    position:relative;
+}
+
+/* Scanlines */
+.terminal-screen::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.2),
+        rgba(28, 113, 25, 0.2) 5px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    opacity: 0.5;
+    animation:  2s linear infinite alternate scanlines;
+    
+}
+
+@keyframes scanlines {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 -100%;
+        color:red;
+    }
+}
+
+
+/* Screen curvature */
+.terminal-screen::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(3, 5, 2, 0) 0%,
+        rgba(0, 0, 0, 0) 50%,
+        rgba(1, 31, 10, 0.981) 100%
+    );
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Glow effect */
+.terminal-screen p, .terminal-screen a {
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
 }
 
 a {
@@ -95,7 +160,7 @@ button.open-terminal:hover {
 .draggable-terminal {
     position: absolute;
     background-color: #000;
-    border: 2px solid #0f0;
+    border: 2px solid rgb(41, 218, 41);
     width: 300px;
     height: 250px;
     z-index: 10;
@@ -105,8 +170,8 @@ button.open-terminal:hover {
 }
 
 .draggable-title {
-    background-color: #020c02;
-    color: rgb(3, 192, 44);
+    background-color: #081808;
+    color: rgb(0, 223, 48);
     padding: 5px 20px;
     text-align: left;
     font-weight: bold;

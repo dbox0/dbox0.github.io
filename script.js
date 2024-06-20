@@ -170,7 +170,7 @@ LinkedIn: click here
 
 
 
-    function createDraggableTerminal(buttonIdOrContent) {
+    function createDraggableTerminal(buttonIdOrContent, title = 'Terminal Window') {
         let content = '';
         switch (buttonIdOrContent) {
             case 'about-btn':
@@ -212,6 +212,8 @@ LinkedIn: click here
         const contentArea = terminal.querySelector('.draggable-content');
 
         contentArea.innerHTML = content;
+        
+        //titleBar.innerHTML = title
 
         // Random Offset
 
