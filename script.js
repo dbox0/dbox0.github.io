@@ -94,11 +94,7 @@ I have worked as a Unity GameDev for a startup (Chameleon GmbH) and am currently
     }
 
     function displayProjects() {
-        const test = `
-Projects:
-1. <a href="https://your-portfolio-website.com/project1">Portfolio Website</a> - A terminal-style portfolio website.
-2. <a href="https://your-portfolio-website.com/project2">TEST</a> - A simple Test Project.
-`;
+
 
         const projectsText = `
 Projects:
@@ -201,6 +197,9 @@ LinkedIn: click here
             case 'contact-btn':
                 content = `<p>You can reach me at: georgi.dimov96@gmail.com</p>
                 <p>LinkedIn:</p><a href="https://www.linkedin.com/in/georgi-dimov-8160a9211/" target="_blank"> link</a>`;
+                break;
+            case 'resume':
+                content=`<p>Opened Resume in a new tab.</p>`
                 break;
             default:
                 content = buttonIdOrContent;
