@@ -144,7 +144,7 @@ LinkedIn: click here
                     output.textContent += input[index];
                     index++;
                 }
-                setTimeout(type, 5);  
+                setTimeout(type, 15);  
             }
         }
 
