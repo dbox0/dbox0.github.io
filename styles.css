@@ -63,9 +63,9 @@ body {
     height: 100%;
     background: radial-gradient(
         ellipse at center,
-        rgba(8, 23, 0, 0.05) 0%,
-        rgba(2, 6, 0, 0.002) 50%,
-        rgba(0, 0, 0, 0.2) 80%
+        rgba(5, 9, 3, 0.05) 0%,
+        rgba(7, 19, 0, 0.05) 80%,
+        rgba(0, 0, 0, 0.1) 100%
     );
     pointer-events: none;
     opacity: 0.5;
@@ -90,6 +90,7 @@ a:hover {
     width: 80%;
     max-width: 800px;
     margin-bottom: 10px;
+    overflow: a;
 }
 
 .terminal-title {
