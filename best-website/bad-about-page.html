@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background: repeating-linear-gradient(45deg, #ff0000, #ff0000 10px, #00ff00 10px, #00ff00 20px);
+      font-family: "Comic Sans MS", cursive;
+      cursor: wait;
+    }
+    
+    .container {
+      background: rgba(255, 255, 0, 0.8);
+      padding: 20px;
+      margin: 40px;
+      border: 12px dotted blue;
+    }
+    
+    h1 {
+      color: #ff00ff;
+      text-shadow: 5px 5px #000000;
+      font-size: 72px;
+      text-align: justify;
+      text-transform: uppercase;
+      animation: blink 0.5s infinite;
+    }
+    
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    p {
+      font-size: 24px;
+      color: blue;
+      text-align: right;
+      line-height: 0.8;
+      word-spacing: 20px;
+    }
+    
+    marquee {
+      background: #ff00ff;
+      color: white;
+      font-size: 36px;
+    }
+    
+    button {
+      background: red;
+      border: 5px solid green;
+      padding: 20px;
+      font-size: 24px;
+      cursor: not-allowed;
+      transform: rotate(45deg);
+    }
+    
+    img {
+      width: 100%;
+      filter: hue-rotate(180deg) invert(100%);
+    }
+  </style>
+</head>
+<body>
+  <marquee scrollamount="30" direction="right">🛍️ WELCOME TO SUPER MEGA SHOP! 🛍️</marquee>
+  
+  <div class="container">
+    <h1>ABOUT US!!!!!!</h1>
+    
+    <img src="/api/placeholder/800/400" alt="Our store">
+    
+    <p>ESTABLISHED in 2024!!!! We are THE BEST online shopping destination for ALL YOUR NEEDS!!!!!! Our mission is to provide AMAZING products at AMAZING prices with AMAZING service!!!!!!!</p>
+    
+    <p>We have over 1,000,000 satisfied customers AND COUNTING!!!!! Don't believe us? Just read our 100% GENUINE reviews below!!!!!!!</p>
+    
+    <marquee direction="up" height="100px">⭐⭐⭐⭐⭐ "Best shop ever!" - John D.</marquee>
+    <marquee direction="down" height="100px">⭐⭐⭐⭐⭐ "Amazing service!" - Jane S.</marquee>
+    
+    <p style="font-size: 8px; color: #666666;">Terms and conditions apply. All sales final. No returns accepted. We are not responsible for any issues. By viewing this page you agree to all terms.</p>
+    
+    <center>
+      <button onclick="alert('ERROR! Please try again later!')">CONTACT US NOW!!!!</button>
+      <button onclick="window.print()">PRINT THIS PAGE!!!!</button>
+      <button onmouseover="this.style.display='none'">SPECIAL OFFER!!!!</button>
+    </center>
+    
+    <audio autoplay loop>
+      <source src="nonexistent.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+  
+  <marquee scrollamount="20">💰 LIMITED TIME OFFER! EVERYTHING MUST GO! ACT NOW! 💰</marquee>
+</body>
+</html>
