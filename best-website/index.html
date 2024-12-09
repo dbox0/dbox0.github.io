@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background: lime;
+      font-family: "Comic Sans MS", cursive;
+      cursor: crosshair;
+      overflow-x: hidden;
+    }
+    
+    .header {
+      background: red;
+      color: blue;
+      padding: 20px;
+      text-align: center;
+      animation: blink 0.5s infinite;
+      font-size: 48px;
+      text-shadow: 4px 4px pink;
+    }
+    
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    .menu {
+      background: yellow;
+      padding: 10px;
+      margin-top: 20px;
+      text-align: right;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 999;
+    }
+    
+    .menu a {
+      color: purple;
+      text-decoration: none;
+      margin: 0 5px;
+      font-size: 24px;
+      animation: rainbow 2s infinite;
+    }
+    
+    @keyframes rainbow {
+      0% { color: red; }
+      20% { color: orange; }
+      40% { color: yellow; }
+      60% { color: green; }
+      80% { color: blue; }
+      100% { color: purple; }
+    }
+    
+    .menu a:hover {
+      color: orange;
+      font-size: 28px;
+    }
+    
+    .product {
+      border: 5px dotted pink;
+      margin: 10px;
+      padding: 15px;
+      background: #ff00ff;
+      float: left;
+      width: 150px;
+      height: 250px;
+      overflow: hidden;
+      transform: rotate(3deg);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .product img {
+      width: 100px;
+      height: 100px;
+      border: 10px ridge gold;
+      animation: spin 5s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .product:hover {
+      transform: rotate(-3deg) scale(1.1);
+      z-index: 2;
+    }
+    
+    .buy-button {
+      background: orange;
+      border: 5px outset green;
+      padding: 10px;
+      font-size: 24px;
+      cursor: not-allowed;
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+    }
+    
+    marquee {
+      background: white;
+      color: red;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+    #popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: yellow;
+      padding: 20px;
+      border: 3px solid red;
+      animation: shake 0.5s infinite;
+      z-index: 1000;
+    }
+    
+    #popup2 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: cyan;
+      padding: 20px;
+      border: 3px dashed purple;
+      animation: bounce 1s infinite;
+      z-index: 1001;
+    }
+    
+    #newsletter {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: pink;
+      padding: 15px;
+      border: 5px groove orange;
+      animation: rotate 3s infinite;
+      z-index: 1002;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      10% { transform: translate(-1px, -2px) rotate(-1deg); }
+      20% { transform: translate(-3px, 0px) rotate(1deg); }
+      30% { transform: translate(3px, 2px) rotate(0deg); }
+      40% { transform: translate(1px, -1px) rotate(1deg); }
+      50% { transform: translate(-1px, 2px) rotate(-1deg); }
+      60% { transform: translate(-3px, 1px) rotate(0deg); }
+      70% { transform: translate(3px, 1px) rotate(-1deg); }
+      80% { transform: translate(-1px, -1px) rotate(1deg); }
+      90% { transform: translate(1px, 2px) rotate(0deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+    
+    .background-text {
+      position: fixed;
+      font-size: 200px;
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 0;
+      color: purple;
+      transform: rotate(-45deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="background-text">SUPER SALE!!!</div>
+  
+  <div class="header">
+    SUPER AMAZING SHOP!!!!!!
+  </div>
+  
+  <marquee scrollamount="15" direction="right">🔥🔥🔥 HOT DEALS! BUY NOW! DON'T MISS OUT! AMAZING PRICES! WOW! 🔥🔥🔥</marquee>
+  <marquee scrollamount="10" direction="left">💥💥💥 INCREDIBLE OFFERS! LIMITED TIME! ACT NOW! BEST PRICES EVER! 💥💥💥</marquee>
+  
+  <div class="menu">
+    <a href="#">HOME</a>
+    <a href="#">PRODUCTS!!!</a>
+    <a href="./bad-about-page.html">ABOUT US!!</a>
+    <a href="#">CONTACT!!!</a>
+  </div>
+
+  <!-- Repeated 20 times for maximum clutter -->
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>WOW ITEM!!!</h2>
+    <p>ONLY $9.99!!!</p>
+    <button class="buy-button" onclick="alert('ERROR: SYSTEM BUSY, TRY AGAIN LATER!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>AMAZING!!!</h2>
+    <p>JUST $19.99!!!</p>
+    <button class="buy-button" onclick="alert('OOPS! SOMETHING WENT WRONG!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>MUST BUY!!!</h2>
+    <p>$29.99!!!</p>
+    <button class="buy-button" onclick="alert('SERVER ERROR 404!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>SO CHEAP!!!</h2>
+    <p>$39.99!!!</p>
+    <button class="buy-button" onclick="alert('PLEASE TRY AGAIN LATER!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>BARGAIN!!!</h2>
+    <p>$49.99!!!</p>
+    <button class="buy-button" onclick="alert('SYSTEM OVERLOADED!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>DON'T MISS!!!</h2>
+    <p>$59.99!!!</p>
+    <button class="buy-button" onclick="alert('CONNECTION TIMEOUT!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>SUPER DEAL!!!</h2>
+    <p>$69.99!!!</p>
+    <button class="buy-button" onclick="alert('DATABASE ERROR!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>HOT ITEM!!!</h2>
+    <p>$79.99!!!</p>
+    <button class="buy-button" onclick="alert('SERVER BUSY!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>BUY NOW!!!</h2>
+    <p>$89.99!!!</p>
+    <button class="buy-button" onclick="alert('PAYMENT SYSTEM DOWN!!!')">BUY NOW!!!</button>
+  </div>
+  <div class="product">
+    <img src="/api/placeholder/100/100" alt="Product">
+    <h2>LAST ONE!!!</h2>
+    <p>$99.99!!!</p>
+    <button class="buy-button" onclick="alert('CART SYSTEM ERROR!!!')">BUY NOW!!!</button>
+  </div>
+  
+  <div id="popup">
+    🎉 CONGRATULATIONS! You are our 1,000,000th visitor! Claim your prize now! 🎉
+    <button onclick="this.parentElement.style.display='none'">X</button>
+  </div>
+  
+  <div id="popup2">
+    💫 FLASH SALE! Next 5 minutes only! 90% OFF! 💫
+    <button onclick="this.parentElement.style.display='none'">Close</button>
+  </div>
+  
+  <div id="newsletter">
+    📧 SUBSCRIBE TO OUR NEWSLETTER FOR AMAZING DEALS! 📧
+    <input type="email" placeholder="Enter email here!!!">
+    <button onclick="alert('SUBSCRIPTION ERROR! TRY AGAIN!!!')">SUBSCRIBE NOW!</button>
+  </div>
+</body>
+</html>
