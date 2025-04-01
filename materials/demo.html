@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Material Types</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        .subtitle {
+            font-weight: 300;
+            margin-top: 5px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .controls-group {
+            margin-bottom: 15px;
+        }
+        .canvas-container {
+            position: relative;
+            height: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        #materialCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .material-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .material-btn {
+            padding: 10px 15px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 500;
+        }
+        .material-btn:hover {
+            background-color: #2980b9;
+        }
+        .material-btn.active {
+            background-color: #e74c3c;
+        }
+        .slider-container {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .slider {
+            width: 100%;
+            max-width: 200px;
+        }
+        .color-picker {
+            margin: 10px 0;
+        }
+        .info-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        code {
+            display: block;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        .shape-selector {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .shape-btn {
+            padding: 8px 12px;
+            border: none;
+            background-color: #7f8c8d;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .shape-btn:hover {
+            background-color: #6c7a7a;
+        }
+        .shape-btn.active {
+            background-color: #2c3e50;
+        }
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            .controls-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Three.js Material Types</h1>
+        <p class="subtitle">Interactive Demo and Comparison</p>
+    </header>
+
+    <div class="container">
+        <div class="canvas-container">
+            <canvas id="materialCanvas"></canvas>
+        </div>
+
+        <div class="material-selector">
+            <button class="material-btn active" data-material="MeshBasicMaterial">Basic</button>
+            <button class="material-btn" data-material="MeshLambertMaterial">Lambert</button>
+            <button class="material-btn" data-material="MeshPhongMaterial">Phong</button>
+            <button class="material-btn" data-material="MeshToonMaterial">Toon</button>
+            <button class="material-btn" data-material="MeshStandardMaterial">Standard</button>
+            <button class="material-btn" data-material="MeshPhysicalMaterial">Physical</button>
+            <button class="material-btn" data-material="MeshNormalMaterial">Normal</button>
+            <button class="material-btn" data-material="MeshDepthMaterial">Depth</button>
+            <button class="material-btn" data-material="ShaderMaterial">Shader</button>
+        </div>
+
+        <div class="shape-selector">
+            <button class="shape-btn active" data-shape="sphere">Sphere</button>
+            <button class="shape-btn" data-shape="torus">Torus</button>
+            <button class="shape-btn" data-shape="cube">Cube</button>
+            <button class="shape-btn" data-shape="teapot">Complex</button>
+        </div>
+
+        <div class="controls">
+            <div class="controls-group">
+                <h3>Material Properties</h3>
+                <div class="color-picker">
+                    <label for="colorPicker">Color</label>
+                    <input type="color" id="colorPicker" value="#3498db">
+                </div>
+                <div class="slider-container">
+                    <label for="wireframeToggle">Wireframe</label>
+                    <input type="checkbox" id="wireframeToggle">
+                </div>
+                <div class="slider-container">
+                    <label for="opacitySlider">Opacity: <span id="opacityValue">1.0</span></label>
+                    <input type="range" id="opacitySlider" class="slider" min="0" max="1" step="0.01" value="1">
+                </div>
+            </div>
+
+            <div class="controls-group">
+                <h3>PBR Properties</h3>
+                <div class="slider-container">
+                    <label for="roughnessSlider">Roughness: <span id="roughnessValue">0.5</span></label>
+                    <input type="range" id="roughnessSlider" class="slider" min="0" max="1" step="0.01" value="0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="metalnessSlider">Metalness: <span id="metalnessValue">0.5</span></label>
+                    <input type="range" id="metalnessSlider" class="slider" min="0" max="1" step="0.01" value="0.5">
+                </div>
+                <div class="slider-container">
+                    <label for="clearcoatSlider">Clearcoat: <span id="clearcoatValue">0.0</span></label>
+                    <input type="range" id="clearcoatSlider" class="slider" min="0" max="1" step="0.01" value="0">
+                </div>
+            </div>
+
+            <div class="controls-group">
+                <h3>Lighting</h3>
+                <div class="slider-container">
+                    <label for="ambientLightSlider">Ambient Light: <span id="ambientLightValue">0.2</span></label>
+                    <input type="range" id="ambientLightSlider" class="slider" min="0" max="1" step="0.01" value="0.2">
+                </div>
+                <div class="slider-container">
+                    <label for="directionalLightSlider">Directional Light: <span id="directionalLightValue">0.8</span></label>
+                    <input type="range" id="directionalLightSlider" class="slider" min="0" max="1" step="0.01" value="0.8">
+                </div>
+                <div class="slider-container">
+                    <label for="pointLightToggle">Point Light</label>
+                    <input type="checkbox" id="pointLightToggle" checked>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h3>Current Material: <span id="currentMaterial">MeshBasicMaterial</span></h3>
+            <p id="materialDescription">A material for drawing geometries in a simple way. This material is not affected by lights.</p>
+            <h4>Example Code:</h4>
+            <code id="materialCode">const material = new THREE.MeshBasicMaterial({
+    color: 0x3498db,
+    wireframe: false
+});</code>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Initialize Three.js scene, camera, and renderer
+        let scene, camera, renderer, mesh, currentMaterial;
+        let ambientLight, directionalLight, pointLight;
+        let materialType = 'MeshBasicMaterial';
+        let shapeType = 'sphere';
+        
+        // Material descriptions
+        const materialDescriptions = {
+            MeshBasicMaterial: "A material for drawing geometries in a simple way. This material is not affected by lights.",
+            MeshLambertMaterial: "A material for non-shiny surfaces without specular highlights. Calculates lighting per vertex for better performance.",
+            MeshPhongMaterial: "A material for shiny surfaces with specular highlights. Calculates lighting per pixel for better quality.",
+            MeshToonMaterial: "A cartoon shader material that implements toon shading. It provides a 'cel shaded' effect.",
+            MeshStandardMaterial: "A physically based rendering material (PBR) that has built-in support for roughness and metalness properties.",
+            MeshPhysicalMaterial: "An extension of MeshStandardMaterial that provides more advanced physically-based rendering. It includes features like clearcoat, transmission, and reflectivity.",
+            MeshNormalMaterial: "A material that maps the normal vectors to RGB colors. Useful for debugging and visualizing normals.",
+            MeshDepthMaterial: "A material that shows the depth of objects using a grayscale gradient. Deeper objects appear darker.",
+            ShaderMaterial: "A material that allows you to create custom shaders with GLSL code. This example shows a simple gradient shader."
+        };
+
+        // Initialize the scene
+        init();
+        
+        function init() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+            
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 3;
+            
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: document.getElementById('materialCanvas'),
+                antialias: true 
+            });
+            renderer.setSize(document.getElementById('materialCanvas').clientWidth, document.getElementById('materialCanvas').clientHeight);
+            
+            // Add lights
+            ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            scene.add(ambientLight);
+            
+            directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            pointLight = new THREE.PointLight(0xff9000, 1, 10);
+            pointLight.position.set(-1, 1, 1);
+            scene.add(pointLight);
+            
+            // Create initial material and geometry
+            createMesh();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Set up event listeners for controls
+            setupEventListeners();
+            
+            // Start animation loop
+            animate();
+        }
+        
+        function createMesh() {
+            // Remove existing mesh if any
+            if (mesh) {
+                scene.remove(mesh);
+            }
+            
+            // Create geometry based on shape selection
+            let geometry;
+            switch (shapeType) {
+                case 'sphere':
+                    geometry = new THREE.SphereGeometry(1, 32, 32);
+                    break;
+                case 'torus':
+                    geometry = new THREE.TorusGeometry(0.7, 0.3, 16, 50);
+                    break;
+                case 'cube':
+                    geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+                    break;
+                case 'teapot':
+                    // Teapot is approximated with a knot geometry
+                    geometry = new THREE.TorusKnotGeometry(0.7, 0.2, 100, 16);
+                    break;
+            }
+            
+            // Create material based on selection
+            createMaterial();
+            
+            // Create mesh
+            mesh = new THREE.Mesh(geometry, currentMaterial);
+            scene.add(mesh);
+        }
+        
+        function createMaterial() {
+            const color = new THREE.Color(document.getElementById('colorPicker').value);
+            const wireframe = document.getElementById('wireframeToggle').checked;
+            const opacity = parseFloat(document.getElementById('opacitySlider').value);
+            const transparent = opacity < 1.0;
+            
+            const roughness = parseFloat(document.getElementById('roughnessSlider').value);
+            const metalness = parseFloat(document.getElementById('metalnessSlider').value);
+            const clearcoat = parseFloat(document.getElementById('clearcoatSlider').value);
+            
+            let materialOptions = {
+                color: color,
+                wireframe: wireframe,
+                transparent: transparent,
+                opacity: opacity,
+            };
+            
+            switch (materialType) {
+                case 'MeshBasicMaterial':
+                    currentMaterial = new THREE.MeshBasicMaterial(materialOptions);
+                    break;
+                    
+                case 'MeshLambertMaterial':
+                    currentMaterial = new THREE.MeshLambertMaterial(materialOptions);
+                    break;
+                    
+                case 'MeshPhongMaterial':
+                    materialOptions.shininess = 30;
+                    materialOptions.specular = new THREE.Color(0x111111);
+                    currentMaterial = new THREE.MeshPhongMaterial(materialOptions);
+                    break;
+                    
+                case 'MeshToonMaterial':
+                    currentMaterial = new THREE.MeshToonMaterial(materialOptions);
+                    break;
+                    
+                case 'MeshStandardMaterial':
+                    materialOptions.roughness = roughness;
+                    materialOptions.metalness = metalness;
+                    currentMaterial = new THREE.MeshStandardMaterial(materialOptions);
+                    break;
+                    
+                case 'MeshPhysicalMaterial':
+                    materialOptions.roughness = roughness;
+                    materialOptions.metalness = metalness;
+                    materialOptions.clearcoat = clearcoat;
+                    materialOptions.clearcoatRoughness = 0.1;
+                    currentMaterial = new THREE.MeshPhysicalMaterial(materialOptions);
+                    break;
+                    
+                case 'MeshNormalMaterial':
+                    currentMaterial = new THREE.MeshNormalMaterial({
+                        wireframe: wireframe,
+                        transparent: transparent,
+                        opacity: opacity
+                    });
+                    break;
+                    
+                case 'MeshDepthMaterial':
+                    currentMaterial = new THREE.MeshDepthMaterial({
+                        wireframe: wireframe,
+                        transparent: transparent,
+                        opacity: opacity
+                    });
+                    break;
+                    
+                case 'ShaderMaterial':
+                    const vertexShader = `
+                        varying vec2 vUv;
+                        
+                        void main() {
+                            vUv = uv;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                        }
+                    `;
+                    
+                    const fragmentShader = `
+                        uniform vec3 color;
+                        varying vec2 vUv;
+                        
+                        void main() {
+                            gl_FragColor = vec4(vUv.x, vUv.y,0, 1.0);
+                        }
+                    `;
+                    
+                    currentMaterial = new THREE.ShaderMaterial({
+                        uniforms: {
+                            color: { value: color }
+                        },
+                        vertexShader: vertexShader,
+                        fragmentShader: fragmentShader,
+                        wireframe: wireframe,
+                        transparent: transparent,
+                        opacity: opacity
+                    });
+                    break;
+            }
+            
+            // Update code example in the info panel
+            updateCodeExample();
+        }
+        
+        function updateCodeExample() {
+            let codeExample = "";
+            const color = document.getElementById('colorPicker').value;
+            const wireframe = document.getElementById('wireframeToggle').checked;
+            const opacity = parseFloat(document.getElementById('opacitySlider').value);
+            const transparent = opacity < 1.0;
+            const roughness = parseFloat(document.getElementById('roughnessSlider').value);
+            const metalness = parseFloat(document.getElementById('metalnessSlider').value);
+            const clearcoat = parseFloat(document.getElementById('clearcoatSlider').value);
+            
+            // Convert hex color to number
+            const colorNum = parseInt(color.replace("#", "0x"));
+            
+            switch (materialType) {
+                case 'MeshBasicMaterial':
+                    codeExample = `const material = new THREE.MeshBasicMaterial({
+    color: ${colorNum},
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshLambertMaterial':
+                    codeExample = `const material = new THREE.MeshLambertMaterial({
+    color: ${colorNum},
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshPhongMaterial':
+                    codeExample = `const material = new THREE.MeshPhongMaterial({
+    color: ${colorNum},
+    shininess: 30,
+    specular: 0x111111,
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshToonMaterial':
+                    codeExample = `const material = new THREE.MeshToonMaterial({
+    color: ${colorNum},
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshStandardMaterial':
+                    codeExample = `const material = new THREE.MeshStandardMaterial({
+    color: ${colorNum},
+    roughness: ${roughness},
+    metalness: ${metalness},
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshPhysicalMaterial':
+                    codeExample = `const material = new THREE.MeshPhysicalMaterial({
+    color: ${colorNum},
+    roughness: ${roughness},
+    metalness: ${metalness},
+    clearcoat: ${clearcoat},
+    clearcoatRoughness: 0.1,
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshNormalMaterial':
+                    codeExample = `const material = new THREE.MeshNormalMaterial({
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'MeshDepthMaterial':
+                    codeExample = `const material = new THREE.MeshDepthMaterial({
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+                    
+                case 'ShaderMaterial':
+                    codeExample = `// Vertex Shader
+const vertexShader = \`
+    varying vec2 vUv;
+    
+    void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+\`;
+
+// Fragment Shader
+const fragmentShader = \`
+    uniform vec3 color;
+    varying vec2 vUv;
+    
+    void main() {
+        gl_FragColor = vec4(vUv.x, vUv.y,0, 1.0);
+    }
+\`;
+
+const material = new THREE.ShaderMaterial({
+    uniforms: {
+        color: { value: new THREE.Color(${colorNum}) }
+    },
+    vertexShader: vertexShader,
+    fragmentShader: fragmentShader,
+    wireframe: ${wireframe}${transparent ? `,
+    transparent: true,
+    opacity: ${opacity}` : ''}
+});`;
+                    break;
+            }
+            
+            document.getElementById('materialCode').textContent = codeExample;
+        }
+        
+        function setupEventListeners() {
+            // Material selection buttons
+            const materialButtons = document.querySelectorAll('.material-btn');
+            materialButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    materialButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    materialType = button.getAttribute('data-material');
+                    document.getElementById('currentMaterial').textContent = materialType;
+                    document.getElementById('materialDescription').textContent = materialDescriptions[materialType];
+                    
+                    if (mesh) {
+                        createMaterial();
+                        mesh.material = currentMaterial;
+                    }
+                });
+            });
+            
+            // Shape selection buttons
+            const shapeButtons = document.querySelectorAll('.shape-btn');
+            shapeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    shapeButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    shapeType = button.getAttribute('data-shape');
+                    createMesh();
+                });
+            });
+            
+            // Color picker
+            document.getElementById('colorPicker').addEventListener('input', () => {
+                if (currentMaterial) {
+                    const color = new THREE.Color(document.getElementById('colorPicker').value);
+                    if (materialType === 'ShaderMaterial') {
+                        currentMaterial.uniforms.color.value = color;
+                    } else if (materialType !== 'MeshNormalMaterial' && materialType !== 'MeshDepthMaterial') {
+                        currentMaterial.color = color;
+                    }
+                    updateCodeExample();
+                }
+            });
+            
+            // Wireframe toggle
+            document.getElementById('wireframeToggle').addEventListener('change', () => {
+                if (currentMaterial) {
+                    currentMaterial.wireframe = document.getElementById('wireframeToggle').checked;
+                    updateCodeExample();
+                }
+            });
+            
+            // Opacity slider
+            document.getElementById('opacitySlider').addEventListener('input', () => {
+                const opacity = parseFloat(document.getElementById('opacitySlider').value);
+                document.getElementById('opacityValue').textContent = opacity.toFixed(2);
+                
+                if (currentMaterial) {
+                    currentMaterial.opacity = opacity;
+                    currentMaterial.transparent = opacity < 1.0;
+                    updateCodeExample();
+                }
+            });
+            
+            // Roughness slider
+            document.getElementById('roughnessSlider').addEventListener('input', () => {
+                const roughness = parseFloat(document.getElementById('roughnessSlider').value);
+                document.getElementById('roughnessValue').textContent = roughness.toFixed(2);
+                
+                if (currentMaterial && (materialType === 'MeshStandardMaterial' || materialType === 'MeshPhysicalMaterial')) {
+                    currentMaterial.roughness = roughness;
+                    updateCodeExample();
+                }
+            });
+            
+            // Metalness slider
+            document.getElementById('metalnessSlider').addEventListener('input', () => {
+                const metalness = parseFloat(document.getElementById('metalnessSlider').value);
+                document.getElementById('metalnessValue').textContent = metalness.toFixed(2);
+                
+                if (currentMaterial && (materialType === 'MeshStandardMaterial' || materialType === 'MeshPhysicalMaterial')) {
+                    currentMaterial.metalness = metalness;
+                    updateCodeExample();
+                }
+            });
+            
+            // Clearcoat slider
+            document.getElementById('clearcoatSlider').addEventListener('input', () => {
+                const clearcoat = parseFloat(document.getElementById('clearcoatSlider').value);
+                document.getElementById('clearcoatValue').textContent = clearcoat.toFixed(2);
+                
+                if (currentMaterial && materialType === 'MeshPhysicalMaterial') {
+                    currentMaterial.clearcoat = clearcoat;
+                    updateCodeExample();
+                }
+            });
+            
+            // Ambient light slider
+            document.getElementById('ambientLightSlider').addEventListener('input', () => {
+                const intensity = parseFloat(document.getElementById('ambientLightSlider').value);
+                document.getElementById('ambientLightValue').textContent = intensity.toFixed(2);
+                ambientLight.intensity = intensity;
+            });
+            
+            // Directional light slider
+            document.getElementById('directionalLightSlider').addEventListener('input', () => {
+                const intensity = parseFloat(document.getElementById('directionalLightSlider').value);
+                document.getElementById('directionalLightValue').textContent = intensity.toFixed(2);
+                directionalLight.intensity = intensity;
+            });
+            
+            // Point light toggle
+            document.getElementById('pointLightToggle').addEventListener('change', () => {
+                pointLight.visible = document.getElementById('pointLightToggle').checked;
+            });
+        }
+        
+        function onWindowResize() {
+            const container = document.getElementById('materialCanvas');
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (mesh) {
+                mesh.rotation.x += 0.005;
+                mesh.rotation.y += 0.01;
+            }
+            
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
