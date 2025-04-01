@@ -156,7 +156,6 @@
             <button class="material-btn" data-material="MeshStandardMaterial">Standard</button>
             <button class="material-btn" data-material="MeshPhysicalMaterial">Physical</button>
             <button class="material-btn" data-material="MeshNormalMaterial">Normal</button>
-            <button class="material-btn" data-material="MeshDepthMaterial">Depth</button>
             <button class="material-btn" data-material="ShaderMaterial">Shader</button>
         </div>
 
@@ -245,8 +244,7 @@
             MeshStandardMaterial: "A physically based rendering material (PBR) that has built-in support for roughness and metalness properties.",
             MeshPhysicalMaterial: "An extension of MeshStandardMaterial that provides more advanced physically-based rendering. It includes features like clearcoat, transmission, and reflectivity.",
             MeshNormalMaterial: "A material that maps the normal vectors to RGB colors. Useful for debugging and visualizing normals.",
-            MeshDepthMaterial: "A material that shows the depth of objects using a grayscale gradient. Deeper objects appear darker.",
-            ShaderMaterial: "A material that allows you to create custom shaders with GLSL code. This example shows a simple gradient shader."
+            ShaderMaterial: "A material that allows you to create custom shaders with GLSL code. This example colors fragments according to their UV coordinate."
         };
 
         // Initialize the scene
@@ -383,13 +381,6 @@
                     });
                     break;
                     
-                case 'MeshDepthMaterial':
-                    currentMaterial = new THREE.MeshDepthMaterial({
-                        wireframe: wireframe,
-                        transparent: transparent,
-                        opacity: opacity
-                    });
-                    break;
                     
                 case 'ShaderMaterial':
                     const vertexShader = `
